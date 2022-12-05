@@ -1,9 +1,11 @@
 package keyActions;
 
+import action.Action;
 import controllers.IllegalTimeValueException;
 import controllers.TimeController;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class KeyHolder implements Runnable {
     private final Thread thread;
     private TimeController timeControllerNano = null;
     private int runningTimeSeconds;
+    private Action actionOnStop;
 
     public KeyHolder() throws AWTException {
         robot = new Robot();
@@ -34,14 +37,26 @@ public class KeyHolder implements Runnable {
         keyEventKeyCodes.add(keycode);
     }
 
-    public void removeKey(int keycode) {
-        keyEventKeyCodes.remove((Integer) keycode);
+    public void clearAllKeys() {
+        keyEventKeyCodes.clear();
+    }
+
+    public List<String> getKeyNameList() {
+        List<String> ret = new ArrayList<>();
+        for (Integer keyEventKeyCode : keyEventKeyCodes) {
+            ret.add(KeyEvent.getKeyText(keyEventKeyCode));
+        }
+        return ret;
     }
 
     public void start() {
         if (!thread.isAlive()) {
             thread.start();
         }
+    }
+
+    public void setActionOnStop(Action actionOnStop) {
+        this.actionOnStop = actionOnStop;
     }
 
     @Override
@@ -62,5 +77,7 @@ public class KeyHolder implements Runnable {
             robot.keyRelease(keyEventKeyCode);
         }
         timeControllerNano = null;
+        if (actionOnStop != null)
+            actionOnStop.execute();
     }
 }

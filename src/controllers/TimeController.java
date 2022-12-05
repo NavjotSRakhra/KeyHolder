@@ -29,4 +29,16 @@ public class TimeController {
     public void over() {
         isOver = true;
     }
+
+    @Override
+    public String toString() {
+        return "isOver: " +
+                isOver +
+                ", endTimeNano: " +
+                endTimeNano +
+                ", timeTimeNano: " +
+                timeTakenNano +
+                ", System.nanoTime(): " +
+                System.nanoTime();
+    }
 }

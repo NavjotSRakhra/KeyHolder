@@ -13,7 +13,7 @@ public class Controller {
     private JButton start;
     private JButton stop;
     private JTextField timeTextField;
-    private JButton keysToHoldDown;
+    private JButton keysToHoldDownButton;
     private JTextArea keysTextArea;
 
     Controller() {
@@ -29,8 +29,8 @@ public class Controller {
         this.keysTextArea = keysTextArea;
     }
 
-    public void setKeysToHoldDown(JButton keysToHoldDown) {
-        this.keysToHoldDown = keysToHoldDown;
+    public void setKeysToHoldDownButton(JButton keysToHoldDownButton) {
+        this.keysToHoldDownButton = keysToHoldDownButton;
     }
 
     public void setStart(JButton start) {
@@ -48,14 +48,14 @@ public class Controller {
     public void actionOnKeyHolderStop() {
         start.setEnabled(true);
         timeTextField.setEnabled(true);
-        keysToHoldDown.setEnabled(true);
+        keysToHoldDownButton.setEnabled(true);
     }
 
     public void actionOnStart(ActionEvent e) {
-        if (keysToHoldDown != null && timeTextField != null && stop != null && start != null) {
+        if (keysToHoldDownButton != null && timeTextField != null && stop != null && start != null) {
             start.setEnabled(false);
             timeTextField.setEnabled(false);
-            keysToHoldDown.setEnabled(false);
+            keysToHoldDownButton.setEnabled(false);
             keyHolder.setRunningTimeSeconds(Integer.parseInt(timeTextField.getText()));
             try {
                 Thread.sleep(5000);
@@ -139,5 +139,9 @@ public class Controller {
 
         dialog.pack();
         dialog.setVisible(true);
+    }
+
+    void debugPrint() {
+        System.out.println(keyHolder);
     }
 }

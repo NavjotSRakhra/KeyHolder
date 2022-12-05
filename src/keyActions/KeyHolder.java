@@ -12,7 +12,7 @@ import java.util.List;
 public class KeyHolder implements Runnable {
     private final Robot robot;
     private final List<Integer> keyEventKeyCodes;
-    private final Thread thread;
+    private Thread thread;
     private TimeController timeControllerNano = null;
     private int runningTimeSeconds;
     private Action actionOnStop;
@@ -21,7 +21,6 @@ public class KeyHolder implements Runnable {
         robot = new Robot();
         keyEventKeyCodes = new ArrayList<>();
         runningTimeSeconds = 10;
-        thread = new Thread(this);
     }
 
     public void setRunningTimeSeconds(int runningTimeSeconds) {
@@ -50,7 +49,8 @@ public class KeyHolder implements Runnable {
     }
 
     public void start() {
-        if (!thread.isAlive()) {
+        if (thread == null || !thread.isAlive()) {
+            thread = new Thread(this);
             thread.start();
         }
     }
@@ -73,11 +73,32 @@ public class KeyHolder implements Runnable {
             }
             robot.delay(20);
         }
-        for (Integer keyEventKeyCode : keyEventKeyCodes) {
-            robot.keyRelease(keyEventKeyCode);
+        int i = 50;
+        while (i-- > 0) {
+            for (Integer keyEventKeyCode : keyEventKeyCodes) {
+                robot.keyRelease(keyEventKeyCode);
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         timeControllerNano = null;
         if (actionOnStop != null)
             actionOnStop.execute();
+    }
+
+    @Override
+    public String toString() {
+        return "keyEventKeyCodes: " +
+                keyEventKeyCodes +
+                "\n" +
+                "runningTimeSeconds: " +
+                runningTimeSeconds +
+                "\n" +
+                "timeController: [" +
+                timeControllerNano +
+                "]";
     }
 }

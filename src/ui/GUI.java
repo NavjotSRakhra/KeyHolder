@@ -24,12 +24,12 @@ public class GUI {
         start.addActionListener(controller::actionOnStart);
         JButton stop = new JButton("Force Stop");
         stop.addActionListener(controller::actionOnStop);
-        JButton keysToHoldDown = new JButton("Set keys to hold");
-        keysToHoldDown.addActionListener(controller::setKeysToHoldDOwn);
+        JButton keysToHoldDownButton = new JButton("Set keys to hold");
+        keysToHoldDownButton.addActionListener(controller::setKeysToHoldDOwn);
 
         controller.setStop(stop);
         controller.setStart(start);
-        controller.setKeysToHoldDown(keysToHoldDown);
+        controller.setKeysToHoldDownButton(keysToHoldDownButton);
         controller.setTimeTextField(timeTextField);
         controller.setKeysTextArea(keysTextArea);
 
@@ -56,7 +56,7 @@ public class GUI {
         c.gridy = 2;
         c.gridwidth = 2;
         c.weightx = 0.0;
-        panel.add(keysToHoldDown, c);
+        panel.add(keysToHoldDownButton, c);
         c.gridwidth = 1;
         c.weightx = 0.5;
         c.gridx = 0;
